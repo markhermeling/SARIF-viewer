@@ -20,6 +20,9 @@ class SettingComponent {
     private var ghesTokenTextField: JTextField  = JBTextField()
     private var ghesTokenPasswordField: JTextField  = JBPasswordField()
     private val toggleButton = JToggleButton("Show/Hide PAT")
+    private val pathPrefixTextField = JBTextField() // New field for PathPrefix
+    private val ruleIdDisplayToggle = JToggleButton("Enable/Disable Rule ID Display") // New toggle for Rule ID Display
+    private var isRuleIdDisplayEnabled: Boolean = false // State for Rule ID Display
 
     private var isGhTokenVisible: Boolean = false
 
@@ -37,10 +40,21 @@ class SettingComponent {
             .addComponent(JBLabel("GHES PAT "))
             .addComponent(ghesTokenTextField)
             .addComponent(ghesTokenPasswordField)
+            .addSeparator(48)
+            .addComponent(JBLabel("Path Prefix ")) // Add label for PathPrefix
+            .addComponent(pathPrefixTextField) // Add text field for PathPrefix
+            .addSeparator(48)
+            .addLabeledComponent("Rule ID Display: ", ruleIdDisplayToggle, 1, false) // Add toggle for Rule ID Display
             .addComponentFillVertically(JPanel(), 0)
             .addSeparator()
             .addLabeledComponent("", toggleButton, 1, false)
             .panel
+
+        ruleIdDisplayToggle.addActionListener {
+            isRuleIdDisplayEnabled = ruleIdDisplayToggle.isSelected // Update state based on toggle
+            myMainPanel!!.revalidate() // Notify the layout manager
+            myMainPanel!!.repaint() // Redraw the components
+        }
 
         toggleButton.addActionListener {
             isGhTokenVisible = !isGhTokenVisible
@@ -111,6 +125,23 @@ class SettingComponent {
     fun setGhesTokenText(newText: String) {
         ghesTokenTextField.text = newText
         ghesTokenPasswordField.text = newText
+    }
+
+    fun getPathPrefixText(): String {
+        return pathPrefixTextField.text // Getter for PathPrefix
+    }
+
+    fun setPathPrefixText(newText: String) {
+        pathPrefixTextField.text = newText // Setter for PathPrefix
+    }
+
+    fun isRuleIdDisplayEnabled(): Boolean {
+        return isRuleIdDisplayEnabled // Getter for Rule ID Display state
+    }
+
+    fun setRuleIdDisplayEnabled(enabled: Boolean) {
+        isRuleIdDisplayEnabled = enabled
+        ruleIdDisplayToggle.isSelected = enabled // Setter for Rule ID Display state
     }
 }
 
