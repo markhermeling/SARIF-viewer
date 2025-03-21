@@ -143,6 +143,21 @@ class SettingComponent {
         isRuleIdDisplayEnabled = enabled
         ruleIdDisplayToggle.isSelected = enabled // Setter for Rule ID Display state
     }
+
+    fun findFile(projectBasePath: String, fileName: String): String? {
+        val basePathFile = java.io.File(projectBasePath, fileName)
+        if (basePathFile.exists()) {
+            return basePathFile.absolutePath
+        }
+
+        val pathPrefix = pathPrefixTextField.text
+        val prefixedPathFile = java.io.File(projectBasePath + pathPrefix, fileName)
+        if (prefixedPathFile.exists()) {
+            return prefixedPathFile.absolutePath
+        }
+
+        return null // File not found in either location
+    }
 }
 
 
